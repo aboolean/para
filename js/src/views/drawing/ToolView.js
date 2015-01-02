@@ -19,7 +19,7 @@ define([
     },
 
     render: function(){
- 
+
     },
 
      events: {
@@ -30,78 +30,54 @@ define([
     'click #followPathTool': 'followPathToolClick',
     'click #undoTool': 'undoToolClick',
     'click #redoTool': 'redoToolClick'
-
   	},
 
-      undoToolClick: function(){
-        this.model.undo();
-        analytics.log(eventType,{type:eventType,id:'undo',action:'undo'});
-      },
-
-      redoToolClick: function(){
-        this.model.redo();
-        analytics.log(eventType,{type:eventType,id:'redo',action:'redo'});
-
-      },
-
-  	 selectToolClick: function(){
-  		this.clearActive();
-  		$('#selectTool').addClass('active');
-  		lastSelected = $('#selectTool');
-      this.model.setState('selectTool');
-      analytics.log(eventType,{type:eventType,id:'selectTool',action:'toolSelected'});
-
-
-  	},
-
-     followPathToolClick: function(){
-      this.clearActive();
-      $('#followPathTool').addClass('active');
-      lastSelected = $('#followPathTool');
-      this.model.setState('followPathTool');
-      analytics.log(eventType,{type:eventType,id:'followPathTool',action:'toolSelected'});
-
-
+    undoToolClick: function(){
+      this.model.undo();
+      analytics.log(eventType,{type:eventType,id:'undo',action:'undo'});
     },
 
-  	penToolClick: function(){
-  		this.clearActive();
-  		$('#penTool').addClass('active');
-  		lastSelected = $('#penTool');
-      this.model.setState('penTool');
-      analytics.log(eventType,{type:eventType,id:'penTool',action:'toolSelected'});
-
-
-  	},
-
-  	polyToolClick: function(){
-  		this.clearActive();
-  		$('#polyTool').addClass('active');
-  		lastSelected = $('#polyTool');
-      this.model.setState('polyTool');
-      analytics.log(eventType,{type:eventType,id:'polyTool',action:'toolSelected'});
-
-
-  	},
-
-    rotateToolClick: function(){
-      this.clearActive();
-      $('#rotateTool').addClass('active');
-      lastSelected = $('#rotateTool');
-      this.model.setState('rotateTool');
-      analytics.log(eventType,{type:eventType,id:'rotateTool',action:'toolSelected'});
-
-
+    redoToolClick: function(){
+      this.model.redo();
+      analytics.log(eventType,{type:eventType,id:'redo',action:'redo'});
     },
 
-  	clearActive: function(){
+    setActive: function (tool) {
+      this.clearActive();
+      $('#' + tool).addClass('active');
+      lastSelected = $('#' + tool);
+      this.model.setState(tool);
+      analytics.log(eventType,{type:eventType,id:tool,action:'toolSelected'});
+    },
+
+  	clearActive: function (){
   		if(lastSelected){
   			lastSelected.removeClass('active');
   		}
-  	}
+  	},
+
+    selectToolClick: function () {
+      this.setActive('selectTool');
+    },
+
+    followPathToolClick: function () {
+      this.setActive('followPathTool');
+    },
+
+    penToolClick: function () {
+      this.setActive('penTool');
+    },
+
+    polyToolClick: function () {
+      this.setActive('polyTool');
+    },
+
+    rotateToolClick: function () {
+      this.setActive('rotateTool');
+    },
 
   });
 
   return ToolView;
-  
+
 });
