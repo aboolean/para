@@ -11,7 +11,7 @@ define([
 
 
 ], function(_, Backbone, BaseToolModel, PolygonNode, PaperManager, analytics) {
-  
+
   //types for bezier tool behavior
   var types = ['point', 'handleIn', 'handleOut'];
   var nameVal = 0;
@@ -27,17 +27,17 @@ define([
   	  defaults:_.extend({},BaseToolModel.prototype.defaults,  {
           }),
 
-   
+
   	initialize: function(){
 
   	},
 
     reset: function(){
-    
+
       if(this.currentPath){
           this.trigger('rootChange',true);
       this.currentPath.selected = false;
-        
+
         var pathNode  = new PolygonNode();
           pathNode.name = "Path_"+nameVal;
             nameVal++;
@@ -47,7 +47,7 @@ define([
         instance.rotation.angle = rotationAmt;
         this.trigger('nodeAdded',pathNode);
          this.trigger('rootUpdate');
-        this.trigger('rootRender');  
+        this.trigger('rootRender');
         this.currentPath.remove();
         this.currentPath = null;
       }
@@ -66,27 +66,27 @@ define([
       mouseDown : function(event) {
         //console.log("poly mouse down");
           if (!this.currentPath) {
-         
-          
-                       
+
+
+
 
           var paper = PaperManager.getPaperInstance();
           this.currentPath =  new paper.Path.RegularPolygon(event.point,sideNum,1);
-       
+
          this.currentPath.selected = true;
-         
+
           rotationAmt=0;
 
 
         }
       },
 
-      
+
 
      //mouse up event
      mouseUp : function(event) {
       this.reset();
-      
+
        },
 
      //mouse drag event
@@ -95,11 +95,11 @@ define([
        if (this.currentPath) {
         var delta = this.currentPath.position.getDistance(event.point);
         var angle = event.point.subtract(this.currentPath.position).angle;
-        var cAngle =this.currentPath.firstSegment.point.subtract(this.currentPath.position).angle; 
-       
+        var cAngle =this.currentPath.firstSegment.point.subtract(this.currentPath.position).angle;
+
         var rad = this.currentPath.position.getDistance(this.currentPath.firstSegment.point);
         var scale = delta/rad;
-     
+
         var rotate = angle-cAngle;
        rotationAmt+=rotate;
         //console.log("mouse angle="+angle);
