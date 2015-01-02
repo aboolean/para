@@ -9,9 +9,11 @@ define([
     'models/data/GeometryNode',
     'models/data/PathNode',
     'models/data/PolygonNode',
+    'models/data/EllipseNode',
     'models/tools/ToolCollection',
     'models/tools/PenToolModel',
     'models/tools/PolyToolModel',
+    'models/tools/EllipseToolModel',
     'models/tools/SelectToolModel',
     'models/tools/RotateToolModel',
     'models/tools/FollowPathToolModel',
@@ -20,17 +22,16 @@ define([
 
     'models/PaperManager',
 
-
-
     'filesaver'
   ],
 
-  function($, _, Backbone, UndoManager, GeometryNode, PathNode, PolygonNode,ToolCollection, PenToolModel, PolyToolModel, SelectToolModel, RotateToolModel, FollowPathToolModel, BehaviorManagerModel, PaperManager, FileSaver) {
+  function($, _, Backbone, UndoManager, GeometryNode, PathNode, PolygonNode, EllipseNode, ToolCollection, PenToolModel, PolyToolModel, EllipseToolModel, SelectToolModel, RotateToolModel, FollowPathToolModel, BehaviorManagerModel, PaperManager, FileSaver) {
     var rootNode,
       currentNode,
       toolCollection,
       penTool,
       polyTool,
+      ellipseTool,
       selectTool,
       rotateTool,
       followPathTool,
@@ -49,7 +50,7 @@ define([
       },
 
       initialize: function(event_bus) {
-        //clutch which controls 
+        //clutch which controls
         clutch=0;
         ////console.log(new FileSaver());
         paper = PaperManager.getPaperInstance();
@@ -65,19 +66,22 @@ define([
         polyTool = new PolyToolModel({
           id: 'polyTool'
         });
+        ellipseTool = new EllipseToolModel({
+          id: 'ellipseTool'
+        });
         rotateTool = new RotateToolModel({
           id: 'rotateTool'
         });
         followPathTool = new FollowPathToolModel({
           id: 'followPathTool'
-          
+
         });
         followPathTool.event_bus = event_bus;
         this.modified = false;
 
         this.event_bus = event_bus;
-      
-        toolCollection = new ToolCollection([penTool, selectTool, polyTool, rotateTool, followPathTool]);
+
+        toolCollection = new ToolCollection([penTool, selectTool, polyTool, ellipseTool, rotateTool, followPathTool]);
         this.listenTo(toolCollection, 'nodeAdded', this.nodeAdded);
         this.listenTo(toolCollection, 'nodeSelected', this.nodeSelected);
         this.listenTo(toolCollection, 'setSelection', this.setSelection);
@@ -141,13 +145,13 @@ define([
             model.undoRedo(after);
           }
 
-          
+
         });
         undoManager = new Backbone.UndoManager({
            track: true,
         register: rootNode
       });
- 
+
         this.zeroedZoom = paper.view.zoom;
         this.zeroedPan = paper.view.center.clone();
 
@@ -164,7 +168,7 @@ define([
 
       redo: function() {
         undoManager.redo();
-         this.rootUpdate();
+        this.rootUpdate();
         this.rootRender();
         paper.view.draw();
 
@@ -197,10 +201,9 @@ define([
         toolCollection.get(this.get('state')).reset();
 
         this.set('state', state);
-        if(state==='penTool'|| state==='polyTool'){
-          console.log('move to root');  
+        if(state==='penTool'|| state==='polyTool' || state==='ellipseTool'){
+          console.log('move to root');
           this.moveToRoot();
-
       }
 
       },
@@ -325,14 +328,14 @@ define([
       //callback triggered when select tool selects shape
       nodeSelected: function(selected) {
         this.determineSelectionPoint(selected);
-      
+
       },
 
       selectionReset: function() {
         this.trigger('selectionReset');
       },
 
-      /*recursively follows parent hierarchy upwards to find correct selection point 
+      /*recursively follows parent hierarchy upwards to find correct selection point
        * when selected node is found, it is assigned as the currently selected
        * node in the selected tool.
        * TODO: make this assignment less janky.
@@ -628,8 +631,11 @@ define([
             case 'path':
               node = new PathNode(data[i]);
               break;
-               case 'polygon':
+            case 'polygon':
               node = new PolygonNode(data[i]);
+              break;
+            case 'ellipse':
+              node = new EllipseNode(data[i]);
               break;
             default:
               node = new GeometryNode(data[i]);
@@ -668,14 +674,14 @@ define([
       updateColor: function(color, type) {
         console.log('color=', color);
         var selectedTool = toolCollection.get(this.get('state'));
-       
+
 
         var update;
         if (type == 'stroke') {
           update = [{
             strokeColor: color
           }];
-        
+
 
          selectedTool.style.strokeColor = color;
           console.log("set stroke color to:", color);
@@ -720,7 +726,7 @@ define([
         var s = selectTool.selectedNodes[selectTool.selectedNodes.length-1];
         if(s){
         this.event_bus.trigger('removeBehavior',s,behaviorName);
-      
+
       }
       },
 

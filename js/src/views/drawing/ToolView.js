@@ -26,18 +26,19 @@ define([
     'click #selectTool': 'selectToolClick',
     'click #penTool': 'penToolClick',
     'click #polyTool': 'polyToolClick',
+    'click #ellipseTool': 'ellipseToolClick',
     'click #rotateTool': 'rotateToolClick',
     'click #followPathTool': 'followPathToolClick',
     'click #undoTool': 'undoToolClick',
     'click #redoTool': 'redoToolClick'
   	},
 
-    undoToolClick: function(){
+    undoToolClick: function (){
       this.model.undo();
       analytics.log(eventType,{type:eventType,id:'undo',action:'undo'});
     },
 
-    redoToolClick: function(){
+    redoToolClick: function (){
       this.model.redo();
       analytics.log(eventType,{type:eventType,id:'redo',action:'redo'});
     },
@@ -75,6 +76,10 @@ define([
     rotateToolClick: function () {
       this.setActive('rotateTool');
     },
+
+    ellipseToolClick: function () {
+      this.setActive('ellipseTool');
+    }
 
   });
 

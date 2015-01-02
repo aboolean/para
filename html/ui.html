@@ -20,10 +20,10 @@
     </script>
   </div>
   <div id="behavior-types-menu">
-    <div class="row"><a id="copy">copy</a></div>  
-    <div class="row"><a id="linear">linear distribution</a></div> 
-    <div class="row"><a id="radial">radial distribution</a></div> 
-    <div class="row"><a id="gaussian">normal distribution</a></div> 
+    <div class="row"><a id="copy">copy</a></div>
+    <div class="row"><a id="linear">linear distribution</a></div>
+    <div class="row"><a id="radial">radial distribution</a></div>
+    <div class="row"><a id="gaussian">normal distribution</a></div>
   </div>
 </div>
 
@@ -70,7 +70,7 @@
       <div id="color-chooser"><div id="color-window"></div></div>
       <div class="container" id="master-container">
 
-      
+
 
     </div>
       <div class="form-group">
@@ -88,12 +88,12 @@
      </div>
     </div>
     </section><!--/colorMenu-->
-       
+
 
       <!--======================= PARAMETER MENU =======================-->
 
-      <section> 
-      
+      <section>
+
      <header >
                         <h2>
                            Parameters
@@ -114,11 +114,11 @@
 
        {{/each}}
        {{#each behaviorName}}
-      
+
        <div class="form-group">
         <button id ={{label}} class='behaviorRemove'>x</button>
        <label id='behaviorName'>{{label}}</label>
-      
+
        <br>
        </div>
 
@@ -140,7 +140,7 @@
                         <div class="clearfix"></div>
                     </header>
       <div  class="section-background">
-          
+
            <div class="form-group">
             <label>name <input class="form-control filename" type="text" id="text-filename" placeholder="my_drawing"/></label>
 
@@ -160,7 +160,7 @@
                         <div class="clearfix"></div>
                     </header>
       <div  class="section-background">
-        
+
           <div class="form-group">
             <input type="button" id="saveFile" value="download file" disabled="true"/>
           </div>
@@ -193,8 +193,8 @@
       <button title="select" class="btn btn-default btn-tool" id="selectTool"><span></button>
       <button title="pen" class="btn btn-default btn-tool" id="penTool"></button>
       <button title="polygon" class="btn btn-default btn-tool" id="polyTool"></button>
-      <!-- <button title="ellipse" class="btn btn-default btn-tool" id="ellipseTool"><span></button>
-      <button title="rectangle" class="btn btn-default btn-tool" id="rectangleTool"></button>
+      <button title="ellipse" class="btn btn-default btn-tool" id="ellipseTool"><span></button>
+      <!-- <button title="rectangle" class="btn btn-default btn-tool" id="rectangleTool"></button>
       <button title="generate" class="btn btn-default btn-tool" id="generateTool"></button> -->
     </div><!--/toolbar-->
   </div><!--/toolbar-container-->
